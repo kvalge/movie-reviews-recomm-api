@@ -2,16 +2,20 @@
 
 ## Technologies
 Python 3.13.5  
-FastAPI — web framework  
-uvicorn — ASGI server to run FastAPI  
-psycopg2-binary — PostgreSQL driver  
-sqlalchemy — ORM  
-alembic — for DB migrations  
-PyJWT — JWT encoding/decoding  
+FastAPI  
+ASGI server - uvicorn   
+Postgres - psycopg2-binary  
+ORM - sqlalchemy  
+alembic DB migrations  
+PyJWT  
 passlib[bcrypt] — for secure password hashing  
+Docker  
 
-## Set UP
-pip install fastapi uvicorn  
+## Setup
+pip install fastapi uvicorn psycopg2-binary sqlalchemy alembic PyJWT passlib[bcrypt]  
+pip install python-dotenv  
 
 ## Run
 uvicorn app.main:app --reload  
+docker-compose up -d
+
