@@ -1,21 +1,22 @@
+# Ignore Python artifacts
 __pycache__/
-*.py[cod]
-*.so
-
-.venv/
+*.pyc
+*.pyo
+*.pyd
 env/
-ENV/
+venv/
+*.env
 
+# Ignore Node.js + Vue artifacts
+node_modules/
+dist/
+frontend/node_modules/
+frontend/dist/
+
+# Common IDE / OS files
+.DS_Store
+.vscode/
 .idea/
 
+# Logs
 *.log
-
-alembic/versions/*.pyc
-
-.DS_Store
-Thumbs.db
-
-volumes/
-docker-compose.override.yml
-
-/.env

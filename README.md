@@ -16,6 +16,7 @@ JavaScript
 Vue.js  
 Vite  
 Vue Router
+Axios
 bootstrap
 Docker  
 
@@ -29,7 +30,8 @@ npm install
 npm run dev  
 npm install bootstrap  
 npm install bootstrap @popperjs/core  
-npm install vue-router
+npm install vue-router  
+npm install axios  
 
 ## Run
 uvicorn app.main:app --reload  

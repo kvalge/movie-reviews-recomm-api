@@ -15,13 +15,69 @@ body {
     min-height: 100vh;
     max-width: 80%;
     margin: 0 auto;
+    color: navy;
 }
 
 .content {
     flex: 1;
     display: flex;
     justify-content: center;
-    margin-top: 20px;
+    background-color: ghostwhite;
+    padding: 30px;
+    border-radius: 3px;
+}
+
+.navbar {
+    height: 70px;
+    border-radius: 3px;
+    font-size: 15px;
+    font-weight: bold;
+}
+
+.navbar.bg-light {
+    background-color: navy !important;
+    padding: 20px;
+}
+
+.navbar-brand,
+.nav-link {
+    color: whitesmoke !important;
+}
+
+.nav-link:hover {
+    color: #cce5ff !important;
+}
+
+.page-container {
+    width: 95%;
+    margin: 0 auto;
+    padding: 2rem;
+    background-color: ghostwhite;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    border-radius: 10px;
+}
+
+h1 {
+    font-size: 50px !important;
+    padding-bottom: 20px;
+    padding-top: 20px;
+}
+
+.btn {
+    background-color: navy !important;
+    border-color: navy;
+    color: whitesmoke !important;
+    font-size: 15px !important;
+    font-weight: bold !important;
+}
+
+.register-box {
+    max-width: 400px;
+}
+
+.form-group {
+    font-size: 13px;
+
 }
 
 @media (prefers-color-scheme: light) {

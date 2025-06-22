@@ -1,6 +1,7 @@
 <template>
-  <div>
+  <div class="container d-flex justify-content-center min-vh-100">
     <h1>Home Page</h1>
-    <p>Welcome to the home page.</p>
   </div>
 </template>
+<script setup lang="ts">
+</script>
