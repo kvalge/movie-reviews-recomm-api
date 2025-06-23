@@ -6,7 +6,7 @@ from app.models.user import User
 from app.db.session import SessionLocal
 
 router = APIRouter(
-    prefix="/users",
+    prefix="/api/users",
     tags=["users"],
 )
 

@@ -1,27 +1,33 @@
 import {BaseService} from './BaseService'
 
+export interface UserResponse {
+    id: number
+    username: string
+    email: string
+}
+
 export abstract class IdentityService extends BaseService {
     static async register(
         username: string,
         email: string,
         password: string,
     ): Promise<{
-        data?: { jwt: string; refreshToken: string }
+        data?: UserResponse
         status?: string
         statusText?: string
         errors?: string[]
     }> {
-        const url = 'register'
+        const url = 'users/register'
         try {
-            const loginData = {
+            const registerData = {
                 username,
                 email,
                 password,
             }
 
-            const response = await this.axios.post<{ jwt: string; refreshToken: string }>(url, loginData)
+            const response = await this.axios.post<UserResponse>(url, registerData)
 
-            console.log('login response', response)
+            console.log('register response', response)
 
             if (response.status <= 300) {
                 console.log('response.data', response.data)
@@ -31,10 +37,15 @@ export abstract class IdentityService extends BaseService {
             return {
                 errors: [(response.status.toString() + ' ' + response.statusText).trim()],
             }
-        } catch (error) {
-            console.log('error: ', (error as Error).message)
+        } catch (error: any) {
+            console.log('error: ', error.message)
+            if (error.response?.data?.detail) {
+                return {
+                    errors: [error.response.data.detail],
+                }
+            }
             return {
-                errors: [JSON.stringify(error)],
+                errors: [error.message || 'Registration failed'],
             }
         }
     }

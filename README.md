@@ -10,6 +10,7 @@ ORM - sqlalchemy
 DB migrations - alembic  
 Security - PyJWT  
 Password hashing - passlib bcrypt  
+
 Front-end:  
 TypeScript  
 JavaScript
@@ -27,7 +28,6 @@ pip install python-dotenv
 alembic init alembic  
 npm create vite@latest .  
 npm install  
-npm run dev  
 npm install bootstrap  
 npm install bootstrap @popperjs/core  
 npm install vue-router  
@@ -36,6 +36,7 @@ npm install axios
 ## Run
 uvicorn app.main:app --reload  
 docker-compose up -d  
+npm run dev  
 
 ## IDE
 PyCharm Professional 2025.1.2  

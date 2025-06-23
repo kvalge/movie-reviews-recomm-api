@@ -20,10 +20,10 @@ const register = async () => {
 
     if (result.errors) {
       error.value = result.errors.join(', ')
-    } else {
+    } else if (result.data) {
       console.log('Registration successful:', result.data)
       error.value = ''
-      await router.push('/')
+      await router.push('/login')
     }
   } catch (err) {
     error.value = 'Registration failed'
