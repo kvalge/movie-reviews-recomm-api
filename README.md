@@ -10,15 +10,16 @@ ORM - sqlalchemy
 DB migrations - alembic  
 Security - PyJWT  
 Password hashing - passlib bcrypt  
-
+  
 Front-end:  
 TypeScript  
-JavaScript
+JavaScript  
 Vue.js  
 Vite  
-Vue Router
-Axios
-bootstrap
+Vue Router  
+Axios  
+bootstrap  
+  
 Docker  
 
 ## Setup
@@ -38,12 +39,13 @@ uvicorn app.main:app --reload
 docker-compose up -d  
 npm run dev  
 
-## IDE
-PyCharm Professional 2025.1.2  
-
 ### Migration Generation
 alembic revision --autogenerate -m "message"  
 alembic upgrade head  
+
+## IDE
+PyCharm Professional 2025.1.2  
+
 
 
 
