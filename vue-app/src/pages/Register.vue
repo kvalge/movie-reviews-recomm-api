@@ -1,7 +1,7 @@
 <script setup lang="ts">
-import { ref } from 'vue'
-import { useRouter } from 'vue-router'
-import { IdentityService } from '../services/IdentityService'
+import {ref} from 'vue'
+import {useRouter} from 'vue-router'
+import {IdentityService} from '../services/IdentityService'
 
 const username = ref('')
 const email = ref('')
@@ -16,9 +16,9 @@ const register = async () => {
 
   try {
     const result = await IdentityService.register(
-      username.value,
-      email.value,
-      password.value
+        username.value,
+        email.value,
+        password.value
     )
 
     if (result.errorsByField) {
@@ -46,7 +46,7 @@ const register = async () => {
 
         <div class="form-group mb-3">
           <label for="username">Username</label>
-          <input id="username" v-model="username" type="text" class="form-control" />
+          <input id="username" v-model="username" type="text" class="form-control"/>
           <div v-if="errors.username" class="text-danger mt-1">
             <div v-for="(msg, i) in errors.username" :key="i">{{ msg }}</div>
           </div>
@@ -54,7 +54,7 @@ const register = async () => {
 
         <div class="form-group mb-3">
           <label for="email">Email</label>
-          <input id="email" v-model="email" type="email" class="form-control" />
+          <input id="email" v-model="email" type="email" class="form-control"/>
           <div v-if="errors.email" class="text-danger mt-1">
             <div v-for="(msg, i) in errors.email" :key="i">{{ msg }}</div>
           </div>
@@ -62,7 +62,7 @@ const register = async () => {
 
         <div class="form-group mb-3">
           <label for="password">Password</label>
-          <input id="password" v-model="password" type="password" class="form-control" />
+          <input id="password" v-model="password" type="password" class="form-control"/>
           <div v-if="errors.password" class="text-danger mt-1">
             <div v-for="(msg, i) in errors.password" :key="i">{{ msg }}</div>
           </div>
