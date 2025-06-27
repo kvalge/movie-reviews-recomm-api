@@ -1,5 +1,16 @@
 <script setup lang="ts">
 import {RouterLink} from 'vue-router'
+import {useAuthStore} from '../../stores/authStore'
+import {useRouter} from 'vue-router'
+
+const auth = useAuthStore()
+const router = useRouter()
+
+const handleLogout = () => {
+  auth.logout()
+  router.push('/login')
+}
+
 </script>
 
 <template>
@@ -19,15 +30,16 @@ import {RouterLink} from 'vue-router'
       </ul>
 
       <ul class="navbar-nav ms-auto">
-        <li class="nav-item">
+        <li class="nav-item" v-if="!auth.isAuthenticated">
           <RouterLink class="nav-link" to="/register">Register</RouterLink>
         </li>
-        <li class="nav-item">
+        <li class="nav-item" v-if="!auth.isAuthenticated">
           <RouterLink class="nav-link" to="/login">Login</RouterLink>
         </li>
-        <li class="nav-item">
-          <RouterLink class="nav-link" to="/">Logout</RouterLink>
+        <li class="nav-item" v-if="auth.isAuthenticated">
+          <a class="nav-link" href="#" @click.prevent="handleLogout">Logout</a>
         </li>
+
       </ul>
     </div>
   </nav>
