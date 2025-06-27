@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { RouterLink } from 'vue-router'
+import {RouterLink} from 'vue-router'
 </script>
 
 <template>
@@ -24,6 +24,9 @@ import { RouterLink } from 'vue-router'
         </li>
         <li class="nav-item">
           <RouterLink class="nav-link" to="/login">Login</RouterLink>
+        </li>
+        <li class="nav-item">
+          <RouterLink class="nav-link" to="/">Logout</RouterLink>
         </li>
       </ul>
     </div>

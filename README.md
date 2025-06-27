@@ -20,6 +20,7 @@
 - Vue Router  
 - Axios  
 - Bootstrap  
+- Pinia  
 
 ### Other
 - Docker  
@@ -42,6 +43,7 @@ npm install bootstrap
 npm install @popperjs/core
 npm install vue-router
 npm install axios
+npm install pinia
 ```
 
 ## Run

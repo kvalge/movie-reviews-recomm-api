@@ -2,14 +2,20 @@
 import {ref} from 'vue'
 import {useRouter} from 'vue-router'
 import {IdentityService} from '../services/IdentityService'
+import {useAuthStore} from '../stores/authStore.ts'
+
 
 const username = ref('')
 const email = ref('')
 const password = ref('')
-
 const errors = ref<{ [key: string]: string[] }>({})
 
 const router = useRouter()
+const auth = useAuthStore()
+
+const clearErrors = () => {
+  errors.value = {}
+}
 
 const register = async () => {
   errors.value = {}
@@ -27,9 +33,10 @@ const register = async () => {
       errors.value._general = result.errors
     }
 
-    if (result.data) {
+    if (result.data && result.data.access_token) {
       errors.value = {}
-      await router.push('/login')
+      auth.setAuth(result.data.access_token, result.data.user)
+      await router.push('/')
     }
   } catch (err) {
     errors.value._general = ['Registration failed']
@@ -70,7 +77,12 @@ const register = async () => {
 
         <button type="submit" class="btn w-100">Register</button>
 
-        <div v-if="errors._general" class="text-danger mt-3 text-center">
+        <button type="button" class="btn btn-outline-secondary mt-2 w-100"
+                @click="() => { username = ''; email = ''; password = ''; clearErrors() }">
+          Reset
+        </button>
+
+        <div v-if="errors._general" class="alert alert-danger mt-3 w-100 text-center" role="alert">
           <div v-for="(msg, i) in errors._general" :key="i">{{ msg }}</div>
         </div>
       </form>
