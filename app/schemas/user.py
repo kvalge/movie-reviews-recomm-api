@@ -1,11 +1,11 @@
-import re
-
 from pydantic import BaseModel, EmailStr, field_validator
+import re
 
 
 class UserBase(BaseModel):
     username: str
     email: EmailStr
+
 
 class UserCreate(UserBase):
     password: str
@@ -33,6 +33,7 @@ class UserCreate(UserBase):
         if not re.search(r'[0-9]', v):
             raise ValueError('Password must include at least one number.')
         return v
+
 
 class UserOut(UserBase):
     id: int

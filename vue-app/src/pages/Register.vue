@@ -1,74 +1,40 @@
 <script setup lang="ts">
-import { ref, reactive } from 'vue'
+import { ref } from 'vue'
 import { useRouter } from 'vue-router'
-import { IdentityService, type ServiceResponse, type UserResponse } from '../services/IdentityService'
-import FormField from '../components/FormField.vue'
+import { IdentityService } from '../services/IdentityService'
 
-interface FormData {
-  username: string
-  email: string
-  password: string
-}
+const username = ref('')
+const email = ref('')
+const password = ref('')
 
-interface FormErrors {
-  [key: string]: string[]
-}
-
-const formData = reactive<FormData>({
-  username: '',
-  email: '',
-  password: ''
-})
-
-const errors = ref<FormErrors>({})
-const isLoading = ref(false)
+const errors = ref<{ [key: string]: string[] }>({})
 
 const router = useRouter()
 
-const clearErrors = () => {
-  errors.value = {}
-}
-
-const setErrors = (result: ServiceResponse<UserResponse>) => {
-  if (result.errorsByField) {
-    errors.value = result.errorsByField
-  } else if (result.errors) {
-    errors.value._general = result.errors
-  }
-}
-
 const register = async () => {
-  clearErrors()
-  isLoading.value = true
+  errors.value = {}
 
   try {
     const result = await IdentityService.register(
-      formData.username,
-      formData.email,
-      formData.password
+      username.value,
+      email.value,
+      password.value
     )
 
+    if (result.errorsByField) {
+      errors.value = result.errorsByField
+    } else if (result.errors) {
+      errors.value._general = result.errors
+    }
+
     if (result.data) {
-      clearErrors()
+      errors.value = {}
       await router.push('/login')
-    } else {
-      setErrors(result)
     }
   } catch (err) {
     errors.value._general = ['Registration failed']
-    console.error('Registration error:', err)
-  } finally {
-    isLoading.value = false
+    console.error(err)
   }
-}
-
-const resetForm = () => {
-  Object.assign(formData, {
-    username: '',
-    email: '',
-    password: ''
-  })
-  clearErrors()
 }
 </script>
 
@@ -76,71 +42,38 @@ const resetForm = () => {
   <div class="container d-flex justify-content-center min-vh-100">
     <div class="w-100 register-box">
       <h1 class="text-center mb-4">Create Account</h1>
-      
-      <form @submit.prevent="register" novalidate>
-        <FormField
-          id="username"
-          label="Username"
-          v-model="formData.username"
-          type="text"
-          :required="true"
-          :disabled="isLoading"
-          :errors="errors.username"
-          placeholder="Enter your username"
-        />
+      <form @submit.prevent="register">
 
-        <FormField
-          id="email"
-          label="Email"
-          v-model="formData.email"
-          type="email"
-          :required="true"
-          :disabled="isLoading"
-          :errors="errors.email"
-          placeholder="Enter your email"
-        />
-
-        <FormField
-          id="password"
-          label="Password"
-          v-model="formData.password"
-          type="password"
-          :required="true"
-          :disabled="isLoading"
-          :errors="errors.password"
-          placeholder="Enter your password"
-        />
-
-        <div class="d-grid gap-2">
-          <button 
-            type="submit" 
-            class="btn btn-primary"
-            :disabled="isLoading"
-          >
-            <span v-if="isLoading" class="spinner-border spinner-border-sm me-2" role="status"></span>
-            {{ isLoading ? 'Registering...' : 'Register' }}
-          </button>
-          
-          <button 
-            type="button" 
-            class="btn btn-outline-secondary"
-            @click="resetForm"
-            :disabled="isLoading"
-          >
-            Reset Form
-          </button>
+        <div class="form-group mb-3">
+          <label for="username">Username</label>
+          <input id="username" v-model="username" type="text" class="form-control" />
+          <div v-if="errors.username" class="text-danger mt-1">
+            <div v-for="(msg, i) in errors.username" :key="i">{{ msg }}</div>
+          </div>
         </div>
 
-        <div v-if="errors._general" class="alert alert-danger mt-3">
+        <div class="form-group mb-3">
+          <label for="email">Email</label>
+          <input id="email" v-model="email" type="email" class="form-control" />
+          <div v-if="errors.email" class="text-danger mt-1">
+            <div v-for="(msg, i) in errors.email" :key="i">{{ msg }}</div>
+          </div>
+        </div>
+
+        <div class="form-group mb-3">
+          <label for="password">Password</label>
+          <input id="password" v-model="password" type="password" class="form-control" />
+          <div v-if="errors.password" class="text-danger mt-1">
+            <div v-for="(msg, i) in errors.password" :key="i">{{ msg }}</div>
+          </div>
+        </div>
+
+        <button type="submit" class="btn w-100">Register</button>
+
+        <div v-if="errors._general" class="text-danger mt-3 text-center">
           <div v-for="(msg, i) in errors._general" :key="i">{{ msg }}</div>
         </div>
       </form>
     </div>
   </div>
 </template>
-
-<style scoped>
-.register-box {
-  max-width: 400px;
-}
-</style>
