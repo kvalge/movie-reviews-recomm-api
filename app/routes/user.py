@@ -3,7 +3,7 @@ from sqlalchemy.orm import Session
 from app.schemas.user import UserCreate, UserLogin
 from app.services.user import create_user, authenticate_user
 from app.models.user import User
-from app.db.session import SessionLocal
+from app.db.session import get_db
 from app.auth.jwt import create_access_token
 from datetime import timedelta
 from dotenv import load_dotenv
@@ -18,12 +18,6 @@ router = APIRouter(
     tags=["users"],
 )
 
-def get_db():
-    db = SessionLocal()
-    try:
-        yield db
-    finally:
-        db.close()
 
 def create_token_response(user: User, expires_delta: timedelta | None = None):
     expires = expires_delta or timedelta(minutes=ACCESS_TOKEN_EXPIRE_MINUTES)
@@ -38,6 +32,7 @@ def create_token_response(user: User, expires_delta: timedelta | None = None):
         }
     }
 
+
 @router.post("/register")
 def register_user(user: UserCreate, db: Session = Depends(get_db)):
     existing_user = db.query(User).filter(
@@ -50,6 +45,7 @@ def register_user(user: UserCreate, db: Session = Depends(get_db)):
         )
     new_user = create_user(db, user)
     return create_token_response(new_user)
+
 
 @router.post("/login")
 def login(user_credentials: UserLogin, db: Session = Depends(get_db)):

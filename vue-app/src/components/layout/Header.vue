@@ -27,6 +27,12 @@ const handleLogout = () => {
         <li class="nav-item active">
           <RouterLink class="nav-link" to="/">Home</RouterLink>
         </li>
+        <li class="nav-item active">
+          <RouterLink class="nav-link" to="/add-review">Add Review</RouterLink>
+        </li>
+        <li class="nav-item active">
+          <RouterLink class="nav-link" to="/manage-movie-data">Manage Movie Data</RouterLink>
+        </li>
       </ul>
 
       <ul class="navbar-nav ms-auto">

@@ -50,6 +50,7 @@ npm install pinia
 
 ```bash
 uvicorn app.main:app --reload
+docker-compose build
 docker-compose up -d
 npm run dev
 ```
