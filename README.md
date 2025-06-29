@@ -1,5 +1,10 @@
 # Movie Reviews and Recommendations API
 
+## Implemented functionalities
+User Registration – create a new user account.  
+User Login & Logout – secure authentication flow with session/token support.  
+Authentication Handling – protect routes and resources based on login status.  
+
 ## Technologies
 
 ### Backend
