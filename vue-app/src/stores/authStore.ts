@@ -9,10 +9,17 @@ interface AuthState {
 export const useAuthStore = defineStore('auth', {
   state: (): AuthState => ({
     token: localStorage.getItem('token'),
-    user: localStorage.getItem('user')
-      ? JSON.parse(localStorage.getItem('user')!)
-      : null,
+    user: (() => {
+      const userData = localStorage.getItem('user')
+      try {
+        return userData ? JSON.parse(userData) as UserResponse : null
+      } catch (e) {
+        console.error('Invalid user data in localStorage')
+        return null
+      }
+    })(),
   }),
+
   actions: {
     setAuth(token: string, user: UserResponse) {
       this.token = token
@@ -20,6 +27,7 @@ export const useAuthStore = defineStore('auth', {
       localStorage.setItem('token', token)
       localStorage.setItem('user', JSON.stringify(user))
     },
+
     logout() {
       this.token = null
       this.user = null
@@ -27,7 +35,9 @@ export const useAuthStore = defineStore('auth', {
       localStorage.removeItem('user')
     },
   },
+
   getters: {
-    isAuthenticated: (state) => !!state.token,
+    isAuthenticated: (state): boolean => !!state.token,
+    isAdmin: (state): boolean => state.user?.username === 'admin',
   },
 })

@@ -1,4 +1,4 @@
-from pydantic import BaseModel, EmailStr, field_validator
+from pydantic import BaseModel, EmailStr, field_validator, ConfigDict
 import re
 
 
@@ -37,9 +37,8 @@ class UserCreate(UserBase):
 
 class UserOut(UserBase):
     id: int
-
-    class Config:
-        orm_mode = True
+    
+    model_config = ConfigDict(from_attributes=True)
 
 
 class UserLogin(BaseModel):

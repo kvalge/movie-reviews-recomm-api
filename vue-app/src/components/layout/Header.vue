@@ -27,10 +27,10 @@ const handleLogout = () => {
         <li class="nav-item active">
           <RouterLink class="nav-link" to="/">Home</RouterLink>
         </li>
-        <li class="nav-item active">
+        <li class="nav-item active" v-if="auth.user?.username === 'admin'">
           <RouterLink class="nav-link" to="/add-review">Add Review</RouterLink>
         </li>
-        <li class="nav-item active">
+        <li class="nav-item active" v-if="auth.user?.username === 'admin'">
           <RouterLink class="nav-link" to="/manage-movie-data">Manage Movie Data</RouterLink>
         </li>
       </ul>
@@ -45,8 +45,8 @@ const handleLogout = () => {
         <li class="nav-item" v-if="auth.isAuthenticated">
           <a class="nav-link" href="#" @click.prevent="handleLogout">Logout</a>
         </li>
-
       </ul>
     </div>
   </nav>
 </template>
+

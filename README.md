@@ -57,11 +57,57 @@ npm run dev
 
 ## Database Migrations
 
+### Quick Migration Commands (Recommended)
+
+Use the provided migration scripts for easy database management:
+
+**Windows (PowerShell):**
+```powershell
+# Generate and apply migration for new models
+.\migrate.ps1 full-migrate "add genres table"
+
+# Apply pending migrations only
+.\migrate.ps1 apply
+
+# Rebuild containers after code changes
+.\migrate.ps1 rebuild
+
+# Check migration status
+.\migrate.ps1 status
+```
+
+**Linux/Mac:**
+```bash
+# Generate and apply migration for new models
+./migrate.sh full-migrate "add genres table"
+
+# Apply pending migrations only
+./migrate.sh apply
+
+# Rebuild containers after code changes
+./migrate.sh rebuild
+
+# Check migration status
+./migrate.sh status
+```
+
+### Manual Migration Commands
+
 ```bash
 alembic revision --autogenerate -m "message"
 alembic upgrade head
+
+alembic revision --autogenerate -m "message"
+docker-compose build
 ```
 
-## IDE
+### Migration Workflow
+1. **Add new model**: Add to `app/models/` and import in `app/models/__init__.py`
+2. **Generate migration**: `.\migrate.ps1 full-migrate "description"`
+3. **Code changes only**: `.\migrate.ps1 rebuild`
 
+## IDE
 PyCharm Professional 2025.1.2
+
+## Swagger
+http://127.0.0.1:8000/docs

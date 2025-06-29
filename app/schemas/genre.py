@@ -1,4 +1,4 @@
-from pydantic import BaseModel, Field, field_validator
+from pydantic import BaseModel, Field, field_validator, ConfigDict
 
 
 class GenreBase(BaseModel):
@@ -29,6 +29,5 @@ class GenreUpdate(BaseModel):
 
 class GenreOut(GenreBase):
     id: int
-
-    class Config:
-        orm_mode = True
+    
+    model_config = ConfigDict(from_attributes=True)
