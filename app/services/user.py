@@ -42,3 +42,13 @@ def authenticate_user(db: Session, identifier: str, password: str) -> Optional[U
         return None
 
     return user
+
+
+def get_user_by_id(db: Session, user_id: int) -> Optional[User]:
+    """Get a user by their ID."""
+    return db.query(User).filter(User.id == user_id).first()
+
+
+def get_user_by_email(db: Session, email: str) -> Optional[User]:
+    """Get a user by their email address."""
+    return db.query(User).filter(User.email == email).first()

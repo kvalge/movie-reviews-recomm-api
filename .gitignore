@@ -13,6 +13,14 @@ dist/
 frontend/node_modules/
 frontend/dist/
 
+# Test artifacts and reports
+vue-app/playwright-report/
+vue-app/test-results/
+coverage/
+htmlcov/
+.coverage
+.pytest_cache/
+
 # Common IDE / OS files
 .DS_Store
 .vscode/

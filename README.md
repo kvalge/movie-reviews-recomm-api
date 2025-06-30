@@ -60,6 +60,25 @@ docker-compose up -d
 npm run dev
 ```
 
+## Testing
+
+### Backend Tests
+From root directory:
+```bash
+pytest
+```
+
+### Frontend Tests
+From root directory:
+```bash
+cd vue-app; npm test
+```
+
+```bash
+cd vue-app; npm run test:e2e
+```
+*(requires dev server running)*
+
 ## Database Migrations
 
 ### Quick Migration Commands (Recommended)

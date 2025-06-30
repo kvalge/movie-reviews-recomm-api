@@ -24,7 +24,7 @@ def create_new_genre(genre: GenreCreate, db: Session = Depends(get_db)):
 
 @router.get("/", response_model=List[GenreOut])
 def get_all_genres(db: Session = Depends(get_db)):
-    return list_genres(db)  # you need to implement list_genres service function
+    return list_genres(db)
 
 @router.get("/{genre_id}", response_model=GenreOut)
 def get_genre(genre_id: int, db: Session = Depends(get_db)):

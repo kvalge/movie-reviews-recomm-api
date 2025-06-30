@@ -10,3 +10,10 @@ alembic~=1.16.2
 python-multipart~=0.0.20
 requests~=2.32.4
 PyJWT~=2.7.0
+
+# Testing dependencies
+pytest~=8.2.0
+pytest-cov~=5.0.0
+pytest-asyncio~=0.24.0
+httpx~=0.28.0
+

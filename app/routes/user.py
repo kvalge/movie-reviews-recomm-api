@@ -1,7 +1,7 @@
 from fastapi import APIRouter, Depends, HTTPException, status
 from sqlalchemy.orm import Session
 from app.schemas.user import UserCreate, UserLogin
-from app.services.user import create_user, authenticate_user
+from app.services.user import create_user, authenticate_user, get_user_by_id, get_user_by_email
 from app.models.user import User
 from app.db.session import get_db
 from app.auth.jwt import create_access_token
@@ -30,6 +30,39 @@ def create_token_response(user: User, expires_delta: timedelta | None = None):
             "username": user.username,
             "email": user.email,
         }
+    }
+
+
+@router.post("/", response_model=dict, status_code=status.HTTP_201_CREATED)
+def create_new_user(user: UserCreate, db: Session = Depends(get_db)):
+    existing_user = db.query(User).filter(
+        (User.username == user.username) | (User.email == user.email)
+    ).first()
+    if existing_user:
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail="Username or email already registered"
+        )
+    new_user = create_user(db, user)
+    return {
+        "id": new_user.id,
+        "username": new_user.username,
+        "email": new_user.email,
+    }
+
+
+@router.get("/{user_id}", response_model=dict)
+def get_user(user_id: int, db: Session = Depends(get_db)):
+    user = get_user_by_id(db, user_id)
+    if not user:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail="User not found"
+        )
+    return {
+        "id": user.id,
+        "username": user.username,
+        "email": user.email,
     }
 
 

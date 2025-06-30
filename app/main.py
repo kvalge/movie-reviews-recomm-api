@@ -12,5 +12,10 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
+@app.get("/")
+def health_check():
+    """Health check endpoint."""
+    return {"status": "healthy", "message": "Movie Reviews API is running"}
+
 app.include_router(user.router)
 app.include_router(genre.router)
