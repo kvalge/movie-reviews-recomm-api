@@ -81,9 +81,7 @@ cd vue-app; npm run test:e2e
 
 ## Database Migrations
 
-### Quick Migration Commands (Recommended)
-
-Use the provided migration scripts for easy database management:
+### Quick Migration Commands
 
 **Windows (PowerShell):**
 ```powershell
