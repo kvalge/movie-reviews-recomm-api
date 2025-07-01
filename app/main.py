@@ -1,6 +1,6 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
-from app.routes import user, genre
+from app.routes import user, genre, position
 
 app = FastAPI()
 
@@ -19,3 +19,4 @@ def health_check():
 
 app.include_router(user.router)
 app.include_router(genre.router)
+app.include_router(position.router)

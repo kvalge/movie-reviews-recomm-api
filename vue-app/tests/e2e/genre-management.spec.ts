@@ -19,7 +19,7 @@ test.describe('Genre Management E2E Tests', () => {
 
   test('should load genre management page', async ({ page }) => {
     // Just verify the page loads and has basic content
-    await expect(page.locator('h2')).toContainText('Manage Genres')
+    await expect(page.locator('h2')).toContainText('Genres')
   })
 
   test('should have working add genre form', async ({ page }) => {

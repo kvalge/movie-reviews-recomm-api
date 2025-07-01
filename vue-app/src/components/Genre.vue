@@ -133,7 +133,7 @@ onMounted(loadGenres)
 
 <template>
   <div class="page-container">
-    <h2>Manage Genres</h2>
+    <h2>Genres</h2>
     
     <div class="split-container">
       <div class="left-panel">

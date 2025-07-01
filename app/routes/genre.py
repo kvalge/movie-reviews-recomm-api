@@ -2,7 +2,7 @@ from typing import List
 from fastapi import APIRouter, Depends, HTTPException, status
 from sqlalchemy.orm import Session
 
-from app.models.genre import Genre
+from app.models.position import Position
 from app.schemas.genre import GenreCreate, GenreOut, GenreUpdate
 from app.services.genre import create_genre, get_genre_by_id, update_genre, delete_genre, list_genres
 from app.db.session import get_db
@@ -14,7 +14,7 @@ router = APIRouter(
 
 @router.post("/", response_model=GenreOut, status_code=status.HTTP_201_CREATED)
 def create_new_genre(genre: GenreCreate, db: Session = Depends(get_db)):
-    existing = db.query(Genre).filter(Genre.name == genre.name).first()
+    existing = db.query(Position).filter(Position.name == genre.name).first()
     if existing:
         raise HTTPException(
             status_code=status.HTTP_400_BAD_REQUEST,
