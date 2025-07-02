@@ -1,88 +1,88 @@
 <script setup lang="ts">
 import { ref, computed, onMounted } from 'vue'
-import { GenreService } from '../services/GenreService'
-import type { Genre, GenreResponse } from '../domain/genre'
+import { PositionService } from '../services/PositionService'
+import type { Position, PositionResponse } from '../domain/position'
 
-const genreService = new GenreService()
+const positionService = new PositionService()
 
-const genres = ref<GenreResponse[]>([])
-const newGenre = ref<Genre>({ name: '', description: '' })
-const selectedGenre = ref<GenreResponse | null>(null)
+const positions = ref<PositionResponse[]>([])
+const newPosition = ref<Position>({ name: '', description: '' })
+const selectedPosition = ref<PositionResponse | null>(null)
 const searchText = ref('')
 const error = ref<string | null>(null)
 const successMessage = ref<string | null>(null)
 const showDropdown = ref(false)
 const isEditing = ref(false)
 
-const loadGenres = async () => {
+const loadPositions = async () => {
   try {
-    const response = await genreService.getAll()
-    genres.value = response.data || []
+    const response = await positionService.getAll()
+    positions.value = response.data || []
   } catch (err) {
-    console.error('Error loading genres:', err)
-    error.value = 'Failed to load genres'
+    console.error('Error loading positions:', err)
+    error.value = 'Failed to load positions'
   }
 }
 
-const addGenre = async () => {
-  const response = await genreService.add(newGenre.value)
+const addPosition = async () => {
+  const response = await positionService.add(newPosition.value)
   if (response.data) {
-    genres.value.push(response.data)
-    newGenre.value = { name: '', description: '' }
-    successMessage.value = 'Genre created successfully'
+    positions.value.push(response.data)
+    newPosition.value = { name: '', description: '' }
+    successMessage.value = 'Position created successfully'
     setTimeout(() => successMessage.value = null, 3000)
   } else {
     error.value = response.errors?.[0] || 'Add failed'
   }
 }
 
-const updateGenre = async () => {
-  if (!selectedGenre.value) return
-  
-  const response = await genreService.update(selectedGenre.value.id, selectedGenre.value)
+const updatePosition = async () => {
+  if (!selectedPosition.value) return
+
+  const response = await positionService.update(selectedPosition.value.id, selectedPosition.value)
   if (response.data) {
-    const index = genres.value.findIndex(g => g.id === selectedGenre.value!.id)
+    const index = positions.value.findIndex(p => p.id === selectedPosition.value!.id)
     if (index !== -1) {
-      genres.value[index] = response.data
-      selectedGenre.value = response.data
+      positions.value[index] = response.data
+      selectedPosition.value = response.data
     }
     isEditing.value = false
-    successMessage.value = 'Genre updated successfully'
+    successMessage.value = 'Position updated successfully'
     setTimeout(() => successMessage.value = null, 3000)
   } else {
     error.value = response.errors?.[0] || 'Update failed'
   }
 }
 
-const deleteGenre = async () => {
-  if (!selectedGenre.value) return
-  
-  const response = await genreService.delete(selectedGenre.value.id)
+const deletePosition = async () => {
+  if (!selectedPosition.value) return
+
+  const response = await positionService.delete(selectedPosition.value.id)
   if (!response.errors) {
-    genres.value = genres.value.filter(g => g.id !== selectedGenre.value!.id)
-    selectedGenre.value = null
+    positions.value = positions.value.filter(p => p.id !== selectedPosition.value!.id)
+    selectedPosition.value = null
     searchText.value = ''
     isEditing.value = false
-    successMessage.value = 'Genre deleted successfully'
+    successMessage.value = 'Position deleted successfully'
     setTimeout(() => successMessage.value = null, 3000)
   } else {
     error.value = response.errors[0] || 'Delete failed'
   }
 }
 
-const filteredGenres = computed(() => {
+const filteredPositions = computed(() => {
   if (!searchText.value.trim()) {
-    return genres.value
+    return positions.value
   }
-  
-  return genres.value.filter(g =>
-    g.name.toLowerCase().includes(searchText.value.toLowerCase())
+
+  return positions.value.filter(p =>
+    p.name.toLowerCase().includes(searchText.value.toLowerCase())
   )
 })
 
-const selectGenre = (genre: GenreResponse) => {
-  selectedGenre.value = { ...genre }
-  searchText.value = genre.name
+const selectPosition = (position: PositionResponse) => {
+  selectedPosition.value = { ...position }
+  searchText.value = position.name
   showDropdown.value = false
   isEditing.value = false
 }
@@ -94,7 +94,7 @@ const onSearchFocus = () => {
 const onSearchInput = () => {
   showDropdown.value = true
   if (!searchText.value.trim()) {
-    selectedGenre.value = null
+    selectedPosition.value = null
     isEditing.value = false
   }
 }
@@ -106,7 +106,7 @@ const onSearchBlur = () => {
 }
 
 const clearSelection = () => {
-  selectedGenre.value = null
+  selectedPosition.value = null
   searchText.value = ''
   showDropdown.value = false
   isEditing.value = false
@@ -117,26 +117,26 @@ const startEditing = () => {
 }
 
 const cancelEditing = () => {
-  if (selectedGenre.value) {
-    const original = genres.value.find(g => g.id === selectedGenre.value!.id)
+  if (selectedPosition.value) {
+    const original = positions.value.find(p => p.id === selectedPosition.value!.id)
     if (original) {
-      selectedGenre.value = { ...original }
+      selectedPosition.value = { ...original }
     }
   }
   isEditing.value = false
 }
 
-onMounted(loadGenres)
+onMounted(loadPositions)
 </script>
 
 <template>
   <div class="page-container">
-    <h3>Genres</h3>
-    
+    <h3>Positions</h3>
+
     <div class="split-container">
       <div class="left-panel">
-        <h3 class="panel-title">Select Genre</h3>
-        
+        <h3 class="panel-title">Select Position</h3>
+
         <div class="dropdown-container" style="position: relative;">
           <input
             v-model="searchText"
@@ -146,10 +146,10 @@ onMounted(loadGenres)
             @blur="onSearchBlur"
             class="form-control"
             placeholder="Click to select or start typing to search..."
-            data-test="genre-search-input"
+            data-test="position-search-input"
           />
-          
-          <div 
+
+          <div
             v-if="showDropdown"
             style="
               position: absolute;
@@ -167,10 +167,10 @@ onMounted(loadGenres)
             "
           >
             <div
-              v-for="genre in filteredGenres"
-              :key="genre.id"
-              @mousedown.prevent="selectGenre(genre)"
-              data-test="dropdown-genre-item"
+              v-for="position in filteredPositions"
+              :key="position.id"
+              @mousedown.prevent="selectPosition(position)"
+              data-test="dropdown-position-item"
               class="dropdown-item-hover"
               style="
                 padding: 0.5rem 1rem;
@@ -179,38 +179,38 @@ onMounted(loadGenres)
                 transition: background-color 0.2s;
               "
             >
-              <strong>{{ genre.name }}</strong>
+              <strong>{{ position.name }}</strong>
             </div>
-            <div 
-              v-if="filteredGenres.length === 0" 
+            <div
+              v-if="filteredPositions.length === 0"
               style="color: #999; font-style: italic; padding: 0.5rem 1rem;"
             >
-              No genres found
+              No positions found
             </div>
           </div>
         </div>
 
-        <div v-if="selectedGenre" class="selected-item" data-test="selected-genre">
+        <div v-if="selectedPosition" class="selected-item" data-test="selected-position">
           <div v-if="!isEditing">
-            <h4>{{ selectedGenre.name }}</h4>
-            <p>{{ selectedGenre.description }}</p>
-            
+            <h4>{{ selectedPosition.name }}</h4>
+            <p>{{ selectedPosition.description }}</p>
+
             <div class="action-buttons">
-              <button 
+              <button
                 @click="startEditing"
                 class="btn btn-warning btn-sm"
-                data-test="edit-genre-button"
+                data-test="edit-position-button"
               >
                 Edit
               </button>
-              <button 
-                @click="deleteGenre"
+              <button
+                @click="deletePosition"
                 class="btn btn-danger btn-sm"
-                data-test="delete-genre-button"
+                data-test="delete-position-button"
               >
                 Delete
               </button>
-              <button 
+              <button
                 @click="clearSelection"
                 class="btn btn-sm"
                 data-test="clear-selection-button"
@@ -219,36 +219,36 @@ onMounted(loadGenres)
               </button>
             </div>
           </div>
-          
+
           <div v-else>
             <div style="margin-bottom: 1rem;">
               <label style="display: block; margin-bottom: 0.5rem; color: navy; font-weight: bold;">Name</label>
-              <input 
-                v-model="selectedGenre.name"
+              <input
+                v-model="selectedPosition.name"
                 class="form-control"
-                data-test="edit-genre-name-input"
+                data-test="edit-position-name-input"
               />
             </div>
-            
+
             <div style="margin-bottom: 1rem;">
               <label style="display: block; margin-bottom: 0.5rem; color: navy; font-weight: bold;">Description</label>
-              <textarea 
-                v-model="selectedGenre.description"
+              <textarea
+                v-model="selectedPosition.description"
                 class="form-control"
                 rows="3"
-                data-test="edit-genre-description-input"
+                data-test="edit-position-description-input"
               ></textarea>
             </div>
-            
+
             <div class="action-buttons">
-              <button 
-                @click="updateGenre"
+              <button
+                @click="updatePosition"
                 class="btn btn-warning btn-sm"
-                data-test="update-genre-button"
+                data-test="update-position-button"
               >
                 Save
               </button>
-              <button 
+              <button
                 @click="cancelEditing"
                 class="btn btn-sm"
                 data-test="cancel-edit-button"
@@ -261,54 +261,54 @@ onMounted(loadGenres)
       </div>
 
       <div class="right-panel">
-        <h3 class="panel-title">Add New Genre</h3>
-        
-        <form @submit.prevent="addGenre">
+        <h3 class="panel-title">Add New Position</h3>
+
+        <form @submit.prevent="addPosition">
           <div style="margin-bottom: 1rem;">
-            <label for="genre-name" style="display: block; margin-bottom: 0.5rem; color: navy; font-weight: bold;">Name</label>
-            <input 
-              id="genre-name"
-              v-model="newGenre.name" 
-              class="form-control" 
-              placeholder="Enter genre name" 
-              required 
-              data-test="new-genre-name-input"
+            <label for="position-name" style="display: block; margin-bottom: 0.5rem; color: navy; font-weight: bold;">Name</label>
+            <input
+              id="position-name"
+              v-model="newPosition.name"
+              class="form-control"
+              placeholder="Enter position name"
+              required
+              data-test="new-position-name-input"
             />
           </div>
-          
+
           <div style="margin-bottom: 1.5rem;">
-            <label for="genre-description" style="display: block; margin-bottom: 0.5rem; color: navy; font-weight: bold;">Description</label>
-            <textarea 
-              id="genre-description"
-              v-model="newGenre.description" 
-              class="form-control" 
-              placeholder="Enter genre description"
+            <label for="position-description" style="display: block; margin-bottom: 0.5rem; color: navy; font-weight: bold;">Description</label>
+            <textarea
+              id="position-description"
+              v-model="newPosition.description"
+              class="form-control"
+              placeholder="Enter position description"
               rows="3"
-              data-test="new-genre-description-input"
+              data-test="new-position-description-input"
             ></textarea>
           </div>
-          
-          <button 
-            type="submit" 
+
+          <button
+            type="submit"
             class="btn"
-            data-test="save-new-genre-button"
+            data-test="save-new-position-button"
           >
-            Save New Genre
+            Save New Position
           </button>
         </form>
       </div>
     </div>
 
-    <div 
-      v-if="successMessage" 
+    <div
+      v-if="successMessage"
       class="alert alert-success"
       data-test="success-message"
     >
       {{ successMessage }}
     </div>
 
-    <div 
-      v-if="error" 
+    <div
+      v-if="error"
       class="alert alert-danger"
       data-test="error-message"
     >
