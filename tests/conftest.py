@@ -6,8 +6,8 @@ from sqlalchemy.pool import StaticPool
 
 from app.main import app
 from app.db.session import get_db
-from app.models.user import Base as UserBase
-from app.models.position import Base as GenreBase
+from app.models.user import BaseEntity as UserBase
+from app.models.position import BaseEntity as GenreBase
 
 SQLALCHEMY_DATABASE_URL = "sqlite:///:memory:"
 

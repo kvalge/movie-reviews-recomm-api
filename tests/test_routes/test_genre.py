@@ -46,7 +46,7 @@ def test_update_genre(client, sample_genre_data):
     response = client.put(f"/api/genres/{genre_id}", json=update_data)
     assert response.status_code == status.HTTP_200_OK
     data = response.json()
-    assert data["name"] == "Updated action"
+    assert data["name"] == "Updated Action"
 
 def test_delete_genre(client, sample_genre_data):
     """Test deleting genre."""

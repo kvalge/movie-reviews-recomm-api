@@ -1,9 +1,9 @@
-from sqlalchemy import Column, Integer, String, Text
-from app.db.session import Base
+from sqlalchemy import Column, String, Text
+from app.models.base_entity import BaseEntity
 
-class Genre(Base):
+
+class Genre(BaseEntity):
     __tablename__ = "genres"
 
-    id = Column(Integer, primary_key=True, index=True, autoincrement=True)
     name = Column(String(256), unique=True, nullable=False)
     description = Column(Text, nullable=True)

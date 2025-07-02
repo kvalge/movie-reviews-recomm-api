@@ -4,6 +4,7 @@
 User Registration – create a new user account.  
 User Login & Logout – secure authentication flow with session/token support.  
 Authentication Handling – protect routes and resources based on login status.  
+Add, edit, delete genre.  
 
 ## Technologies
 
@@ -86,7 +87,7 @@ cd vue-app; npm run test:e2e
 **Windows (PowerShell):**
 ```powershell
 # Generate and apply migration for new models
-.\migrate.ps1 full-migrate "add genres table"
+.\migrate.ps1 full-migrate "Initial schema."
 
 # Apply pending migrations only
 .\migrate.ps1 apply
@@ -133,3 +134,7 @@ PyCharm Professional 2025.1.2
 
 ## Swagger
 http://127.0.0.1:8000/docs
+
+# Test that everything works
+.\migrate.ps1 status
+.\migrate.ps1 rebuild

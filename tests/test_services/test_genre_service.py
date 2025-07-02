@@ -41,7 +41,7 @@ def test_update_genre_success(db_session: Session, sample_genre_data):
     genre_update = GenreUpdate(**update_data)
     updated_genre = update_genre(db_session, created_genre.id, genre_update)
     
-    assert updated_genre.name == "Updated action"
+    assert updated_genre.name == "Updated Action"
     assert updated_genre.description == update_data["description"]
 
 def test_delete_genre_success(db_session: Session, sample_genre_data):
