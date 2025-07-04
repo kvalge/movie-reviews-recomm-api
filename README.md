@@ -89,7 +89,7 @@ cd vue-app; npm run test:e2e
 **Windows (PowerShell):**
 ```powershell
 # Generate and apply migration for new models
-.\migrate.ps1 full-migrate "Initial schema."
+.\migrate.ps1 full-migrate "Create cast_and_crew table."
 
 # Apply pending migrations only
 .\migrate.ps1 apply
