@@ -34,7 +34,6 @@ class BaseEntityService(Generic[T], ABC):
             return entity
         except IntegrityError as e:
             db.rollback()
-            # Handle unique constraint violations
             if "UNIQUE constraint failed" in str(e) or "duplicate key value" in str(e):
                 raise HTTPException(
                     status_code=status.HTTP_400_BAD_REQUEST,

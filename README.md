@@ -4,7 +4,7 @@
 User Registration – create a new user account.  
 User Login & Logout – secure authentication flow with session/token support.  
 Authentication Handling – protect routes and resources based on login status.  
-Add, edit, delete genre.  
+Add, edit, delete genre, position (role of the crew members).  
 
 ## Technologies
 
@@ -25,8 +25,10 @@ Add, edit, delete genre.
 - Vite  
 - Vue Router  
 - Axios  
-- Bootstrap  
 - Pinia  
+- Bootstrap  
+- CSS  
+
 
 ### Other
 - Docker  
@@ -55,7 +57,7 @@ npm install pinia
 ## Run
 
 ```bash
-uvicorn app.main:app --reload
+# uvicorn app.main:app --reload
 docker-compose build
 docker-compose up -d
 npm run dev
@@ -124,17 +126,8 @@ alembic revision --autogenerate -m "message"
 docker-compose build
 ```
 
-### Migration Workflow
-1. **Add new model**: Add to `app/models/` and import in `app/models/__init__.py`
-2. **Generate migration**: `.\migrate.ps1 full-migrate "description"`
-3. **Code changes only**: `.\migrate.ps1 rebuild`
-
 ## IDE
 PyCharm Professional 2025.1.2
 
 ## Swagger
 http://127.0.0.1:8000/docs
-
-# Test that everything works
-.\migrate.ps1 status
-.\migrate.ps1 rebuild

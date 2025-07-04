@@ -1,6 +1,7 @@
 from pydantic import BaseModel, Field, field_validator, ConfigDict
 from typing import Optional
 
+
 def validate_name_no_digits(v: str) -> str:
     if any(char.isdigit() for char in v):
         raise ValueError('Name must not contain digits')
