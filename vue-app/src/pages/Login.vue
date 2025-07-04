@@ -7,7 +7,7 @@ import {useAuthStore} from '../stores/authStore'
 const router = useRouter()
 const authStore = useAuthStore()
 
-const identifier = ref('') // username or email
+const identifier = ref('')
 const password = ref('')
 const errors = ref<{ [key: string]: string[] }>({})
 

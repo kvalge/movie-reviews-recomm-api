@@ -135,9 +135,9 @@ onMounted(loadPositions)
 
     <div class="split-container">
       <div class="left-panel">
-        <h3 class="panel-title">Select Position</h3>
+        <h3 class="panel-title">Select</h3>
 
-        <div class="dropdown-container" style="position: relative;">
+        <div class="dropdown-container">
           <input
             v-model="searchText"
             @input="onSearchInput"
@@ -149,42 +149,17 @@ onMounted(loadPositions)
             data-test="position-search-input"
           />
 
-          <div
-            v-if="showDropdown"
-            style="
-              position: absolute;
-              top: 100%;
-              left: 0;
-              right: 0;
-              z-index: 9999;
-              background: white;
-              border: 1px solid #ccc;
-              border-radius: 5px;
-              max-height: 200px;
-              overflow-y: auto;
-              box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-              margin-top: 2px;
-            "
-          >
+          <div v-if="showDropdown" class="custom-dropdown-menu">
             <div
               v-for="position in filteredPositions"
               :key="position.id"
               @mousedown.prevent="selectPosition(position)"
               data-test="dropdown-position-item"
-              class="dropdown-item-hover"
-              style="
-                padding: 0.5rem 1rem;
-                cursor: pointer;
-                border-bottom: 1px solid #eee;
-                transition: background-color 0.2s;
-              "
+              class="custom-dropdown-item dropdown-item-hover"
             >
               <strong>{{ position.name }}</strong>
             </div>
-            <div
-              v-if="filteredPositions.length === 0"
-              style="color: #999; font-style: italic; padding: 0.5rem 1rem;"
-            >
+            <div v-if="filteredPositions.length === 0" class="dropdown-no-results">
               No positions found
             </div>
           </div>
@@ -212,7 +187,7 @@ onMounted(loadPositions)
               </button>
               <button
                 @click="clearSelection"
-                class="btn btn-sm"
+                class="btn btn-secondary"
                 data-test="clear-selection-button"
               >
                 Clear
@@ -221,8 +196,8 @@ onMounted(loadPositions)
           </div>
 
           <div v-else>
-            <div style="margin-bottom: 1rem;">
-              <label style="display: block; margin-bottom: 0.5rem; color: navy; font-weight: bold;">Name</label>
+            <div class="form-group">
+              <label class="form-label">Name</label>
               <input
                 v-model="selectedPosition.name"
                 class="form-control"
@@ -230,8 +205,8 @@ onMounted(loadPositions)
               />
             </div>
 
-            <div style="margin-bottom: 1rem;">
-              <label style="display: block; margin-bottom: 0.5rem; color: navy; font-weight: bold;">Description</label>
+            <div class="form-group">
+              <label class="form-label">Description</label>
               <textarea
                 v-model="selectedPosition.description"
                 class="form-control"
@@ -261,11 +236,11 @@ onMounted(loadPositions)
       </div>
 
       <div class="right-panel">
-        <h3 class="panel-title">Add New Position</h3>
+        <h3 class="panel-title">Add New</h3>
 
         <form @submit.prevent="addPosition">
-          <div style="margin-bottom: 1rem;">
-            <label for="position-name" style="display: block; margin-bottom: 0.5rem; color: navy; font-weight: bold;">Name</label>
+          <div class="form-group">
+            <label for="position-name" class="form-label">Name</label>
             <input
               id="position-name"
               v-model="newPosition.name"
@@ -276,8 +251,8 @@ onMounted(loadPositions)
             />
           </div>
 
-          <div style="margin-bottom: 1.5rem;">
-            <label for="position-description" style="display: block; margin-bottom: 0.5rem; color: navy; font-weight: bold;">Description</label>
+          <div class="form-group-large">
+            <label for="position-description" class="form-label">Description</label>
             <textarea
               id="position-description"
               v-model="newPosition.description"
@@ -288,13 +263,23 @@ onMounted(loadPositions)
             ></textarea>
           </div>
 
-          <button
-            type="submit"
-            class="btn"
-            data-test="save-new-position-button"
-          >
-            Save New Position
-          </button>
+          <div class="action-buttons">
+            <button
+              type="submit"
+              class="btn"
+              data-test="save-new-position-button"
+            >
+              Save New Position
+            </button>
+            <button
+              type="button"
+              class="btn btn-secondary"
+              @click="newPosition = { name: '', description: '' }"
+              data-test="clear-new-position-button"
+            >
+              Clear
+            </button>
+          </div>
         </form>
       </div>
     </div>

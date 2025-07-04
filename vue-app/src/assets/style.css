@@ -24,12 +24,12 @@ body {
     justify-content: center;
     background-color: ghostwhite;
     padding: 30px;
-    border-radius: 3px;
+    border-radius: 2px;
 }
 
 .navbar {
     height: 70px;
-    border-radius: 3px;
+    border-radius: 2px;
     font-size: 15px;
     font-weight: bold;
 }
@@ -54,7 +54,7 @@ body {
     padding: 2rem;
     background-color: ghostwhite;
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-    border-radius: 10px;
+    border-radius: 2px;
 }
 
 h1 {
@@ -80,7 +80,6 @@ h1 {
 
 }
 
-/* Split layout container styles */
 .split-container {
     display: flex;
     gap: 2rem;
@@ -91,7 +90,7 @@ h1 {
     flex: 1;
     padding: 1.5rem;
     background-color: white;
-    border-radius: 10px;
+    border-radius: 2px;
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
 }
 
@@ -99,7 +98,7 @@ h1 {
     flex: 1;
     padding: 1.5rem;
     background-color: white;
-    border-radius: 10px;
+    border-radius: 2px;
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
 }
 
@@ -114,7 +113,7 @@ h1 {
 
 .form-control {
     border: 2px solid #e0e0e0;
-    border-radius: 5px;
+    border-radius: 2px;
     padding: 0.75rem;
     font-size: 14px;
     color: navy;
@@ -134,32 +133,37 @@ textarea.form-control {
     min-height: 80px;
 }
 
-.dropdown-menu {
+.dropdown-container {
+    position: relative;
+}
+
+.custom-dropdown-menu {
     position: absolute;
     top: 100%;
     left: 0;
     right: 0;
-    z-index: 1000;
+    z-index: 9999;
     background: white;
     border: 1px solid #ccc;
-    border-radius: 5px;
+    border-radius: 2px;
     max-height: 200px;
     overflow-y: auto;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    margin-top: 2px;
 }
 
-.dropdown-item {
+.custom-dropdown-item {
     padding: 0.5rem 1rem;
     cursor: pointer;
     border-bottom: 1px solid #eee;
     transition: background-color 0.2s;
 }
 
-.dropdown-item:hover {
+.custom-dropdown-item:hover {
     background-color: #f8f9fa;
 }
 
-.dropdown-item:last-child {
+.custom-dropdown-item:last-child {
     border-bottom: none;
 }
 
@@ -171,11 +175,17 @@ textarea.form-control {
     background-color: #f8f9fa !important;
 }
 
+.dropdown-no-results {
+    color: #999;
+    font-style: italic;
+    padding: 0.5rem 1rem;
+}
+
 .selected-item {
     margin-top: 1rem;
     padding: 1rem;
     background-color: #f8f9fa;
-    border-radius: 8px;
+    border-radius: 2px;
     border: 1px solid #e0e0e0;
 }
 
@@ -190,9 +200,32 @@ textarea.form-control {
     margin-bottom: 1rem;
 }
 
+.form-label {
+    display: block;
+    margin-bottom: 0.5rem;
+    color: navy;
+    font-weight: bold;
+}
+
+.form-group {
+    margin-bottom: 1rem;
+}
+
+.form-group-large {
+    margin-bottom: 1.5rem;
+}
+
 .action-buttons {
     display: flex;
     gap: 0.5rem;
+}
+
+.action-buttons > * {
+    margin-right: 0.5rem;
+}
+
+.action-buttons > *:last-child {
+    margin-right: 0;
 }
 
 .btn-sm {
@@ -201,20 +234,24 @@ textarea.form-control {
 }
 
 .btn-warning {
-    background-color: #ffc107 !important;
-    border-color: #ffc107 !important;
-    color: #212529 !important;
+    background-color: #faae04 !important;
+    border-color: #efa509 !important;
 }
 
 .btn-danger {
-    background-color: #dc3545 !important;
-    border-color: #dc3545 !important;
+    background-color: #bf162b !important;
+    border-color: #a51325 !important;
+}
+
+.btn-secondary {
+    background-color: #6b747e !important;
+    border-color: #6b747e !important;
 }
 
 .alert {
     padding: 0.75rem 1rem;
     margin-top: 1rem;
-    border-radius: 5px;
+    border-radius: 2px;
     font-size: 14px;
 }
 

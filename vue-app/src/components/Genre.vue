@@ -135,9 +135,9 @@ onMounted(loadGenres)
     
     <div class="split-container">
       <div class="left-panel">
-        <h3 class="panel-title">Select Genre</h3>
+        <h3 class="panel-title">Select</h3>
         
-        <div class="dropdown-container" style="position: relative;">
+        <div class="dropdown-container">
           <input
             v-model="searchText"
             @input="onSearchInput"
@@ -149,42 +149,17 @@ onMounted(loadGenres)
             data-test="genre-search-input"
           />
           
-          <div 
-            v-if="showDropdown"
-            style="
-              position: absolute;
-              top: 100%;
-              left: 0;
-              right: 0;
-              z-index: 9999;
-              background: white;
-              border: 1px solid #ccc;
-              border-radius: 5px;
-              max-height: 200px;
-              overflow-y: auto;
-              box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-              margin-top: 2px;
-            "
-          >
+          <div v-if="showDropdown" class="custom-dropdown-menu">
             <div
               v-for="genre in filteredGenres"
               :key="genre.id"
               @mousedown.prevent="selectGenre(genre)"
               data-test="dropdown-genre-item"
-              class="dropdown-item-hover"
-              style="
-                padding: 0.5rem 1rem;
-                cursor: pointer;
-                border-bottom: 1px solid #eee;
-                transition: background-color 0.2s;
-              "
+              class="custom-dropdown-item dropdown-item-hover"
             >
               <strong>{{ genre.name }}</strong>
             </div>
-            <div 
-              v-if="filteredGenres.length === 0" 
-              style="color: #999; font-style: italic; padding: 0.5rem 1rem;"
-            >
+            <div v-if="filteredGenres.length === 0" class="dropdown-no-results">
               No genres found
             </div>
           </div>
@@ -212,7 +187,7 @@ onMounted(loadGenres)
               </button>
               <button 
                 @click="clearSelection"
-                class="btn btn-sm"
+                class="btn btn-secondary"
                 data-test="clear-selection-button"
               >
                 Clear
@@ -221,8 +196,8 @@ onMounted(loadGenres)
           </div>
           
           <div v-else>
-            <div style="margin-bottom: 1rem;">
-              <label style="display: block; margin-bottom: 0.5rem; color: navy; font-weight: bold;">Name</label>
+            <div class="form-group">
+              <label class="form-label">Name</label>
               <input 
                 v-model="selectedGenre.name"
                 class="form-control"
@@ -230,8 +205,8 @@ onMounted(loadGenres)
               />
             </div>
             
-            <div style="margin-bottom: 1rem;">
-              <label style="display: block; margin-bottom: 0.5rem; color: navy; font-weight: bold;">Description</label>
+            <div class="form-group">
+              <label class="form-label">Description</label>
               <textarea 
                 v-model="selectedGenre.description"
                 class="form-control"
@@ -261,11 +236,11 @@ onMounted(loadGenres)
       </div>
 
       <div class="right-panel">
-        <h3 class="panel-title">Add New Genre</h3>
+        <h3 class="panel-title">Add New</h3>
         
         <form @submit.prevent="addGenre">
-          <div style="margin-bottom: 1rem;">
-            <label for="genre-name" style="display: block; margin-bottom: 0.5rem; color: navy; font-weight: bold;">Name</label>
+          <div class="form-group">
+            <label for="genre-name" class="form-label">Name</label>
             <input 
               id="genre-name"
               v-model="newGenre.name" 
@@ -276,8 +251,8 @@ onMounted(loadGenres)
             />
           </div>
           
-          <div style="margin-bottom: 1.5rem;">
-            <label for="genre-description" style="display: block; margin-bottom: 0.5rem; color: navy; font-weight: bold;">Description</label>
+          <div class="form-group-large">
+            <label for="genre-description" class="form-label">Description</label>
             <textarea 
               id="genre-description"
               v-model="newGenre.description" 
@@ -288,13 +263,23 @@ onMounted(loadGenres)
             ></textarea>
           </div>
           
-          <button 
-            type="submit" 
-            class="btn"
-            data-test="save-new-genre-button"
-          >
-            Save New Genre
-          </button>
+          <div class="action-buttons">
+            <button 
+              type="submit" 
+              class="btn"
+              data-test="save-new-genre-button"
+            >
+              Save New Genre
+            </button>
+            <button 
+              type="button" 
+              class="btn btn-secondary"
+              @click="newGenre = { name: '', description: '' }"
+              data-test="clear-new-genre-button"
+            >
+              Clear
+            </button>
+          </div>
         </form>
       </div>
     </div>
