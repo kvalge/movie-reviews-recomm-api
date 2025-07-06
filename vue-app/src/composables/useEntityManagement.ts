@@ -40,7 +40,7 @@ export function useEntityManagement<T, TResponse extends { id: number }>(
     
     const response = await config.service.add(dataToSend)
     if (response.data) {
-      entities.value.push(response.data)
+      entities.value.push(response.data as any)
       newEntity.value = config.createEmptyEntity() as any
       showSuccessMessage(`${config.entityName} created successfully`)
     } else {
@@ -63,7 +63,7 @@ export function useEntityManagement<T, TResponse extends { id: number }>(
     if (response.data) {
       const index = entities.value.findIndex(e => e.id === selectedEntity.value!.id)
       if (index !== -1) {
-        entities.value[index] = response.data
+        entities.value[index] = response.data as any
         selectedEntity.value = response.data as TResponse
       }
       isEditing.value = false
