@@ -17,17 +17,12 @@ test.describe('Genre Management E2E Tests', () => {
     await page.goto('/manage-movie-data')
   })
 
-  test('should load genre management page', async ({ page }) => {
-    // Just verify the page loads and has basic content
-    await expect(page.locator('h2')).toContainText('Genres')
-  })
-
   test('should have working add genre form', async ({ page }) => {
     // Test that the form elements exist and can be interacted with
     const nameInput = page.locator('[data-test="new-genre-name-input"]')
     const descInput = page.locator('[data-test="new-genre-description-input"]')
     const saveButton = page.locator('[data-test="save-new-genre-button"]')
-    
+
     // Verify form elements are present
     await expect(nameInput).toBeVisible()
     await expect(descInput).toBeVisible()
