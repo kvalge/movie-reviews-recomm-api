@@ -1,132 +1,42 @@
 <script setup lang="ts">
-import { ref, computed, onMounted } from 'vue'
 import { PositionService } from '../services/PositionService'
+import { useEntityManagement } from '../composables/useEntityManagement'
 import type { Position, PositionResponse } from '../domain/position'
 
 const positionService = new PositionService()
 
-const positions = ref<PositionResponse[]>([])
-const newPosition = ref<Position>({ name: '', description: '' })
-const selectedPosition = ref<PositionResponse | null>(null)
-const searchText = ref('')
-const error = ref<string | null>(null)
-const successMessage = ref<string | null>(null)
-const showDropdown = ref(false)
-const isEditing = ref(false)
-
-const loadPositions = async () => {
-  try {
-    const response = await positionService.getAll()
-    positions.value = response.data || []
-  } catch (err) {
-    console.error('Error loading positions:', err)
-    error.value = 'Failed to load positions'
-  }
+const config = {
+  service: positionService,
+  entityName: 'Position',
+  searchFields: ['name'] as (keyof PositionResponse)[],
+  createEmptyEntity: (): Position => ({
+    name: '',
+    description: ''
+  })
 }
 
-const addPosition = async () => {
-  const response = await positionService.add(newPosition.value)
-  if (response.data) {
-    positions.value.push(response.data)
-    newPosition.value = { name: '', description: '' }
-    successMessage.value = 'Position created successfully'
-    setTimeout(() => successMessage.value = null, 3000)
-  } else {
-    error.value = response.errors?.[0] || 'Add failed'
-  }
-}
-
-const updatePosition = async () => {
-  if (!selectedPosition.value) return
-
-  const response = await positionService.update(selectedPosition.value.id, selectedPosition.value)
-  if (response.data) {
-    const index = positions.value.findIndex(p => p.id === selectedPosition.value!.id)
-    if (index !== -1) {
-      positions.value[index] = response.data
-      selectedPosition.value = response.data
-    }
-    isEditing.value = false
-    successMessage.value = 'Position updated successfully'
-    setTimeout(() => successMessage.value = null, 3000)
-  } else {
-    error.value = response.errors?.[0] || 'Update failed'
-  }
-}
-
-const deletePosition = async () => {
-  if (!selectedPosition.value) return
-
-  const response = await positionService.delete(selectedPosition.value.id)
-  if (!response.errors) {
-    positions.value = positions.value.filter(p => p.id !== selectedPosition.value!.id)
-    selectedPosition.value = null
-    searchText.value = ''
-    isEditing.value = false
-    successMessage.value = 'Position deleted successfully'
-    setTimeout(() => successMessage.value = null, 3000)
-  } else {
-    error.value = response.errors[0] || 'Delete failed'
-  }
-}
-
-const filteredPositions = computed(() => {
-  if (!searchText.value.trim()) {
-    return positions.value
-  }
-
-  return positions.value.filter(p =>
-    p.name.toLowerCase().includes(searchText.value.toLowerCase())
-  )
-})
-
-const selectPosition = (position: PositionResponse) => {
-  selectedPosition.value = { ...position }
-  searchText.value = position.name
-  showDropdown.value = false
-  isEditing.value = false
-}
-
-const onSearchFocus = () => {
-  showDropdown.value = true
-}
-
-const onSearchInput = () => {
-  showDropdown.value = true
-  if (!searchText.value.trim()) {
-    selectedPosition.value = null
-    isEditing.value = false
-  }
-}
-
-const onSearchBlur = () => {
-  setTimeout(() => {
-    showDropdown.value = false
-  }, 300)
-}
-
-const clearSelection = () => {
-  selectedPosition.value = null
-  searchText.value = ''
-  showDropdown.value = false
-  isEditing.value = false
-}
-
-const startEditing = () => {
-  isEditing.value = true
-}
-
-const cancelEditing = () => {
-  if (selectedPosition.value) {
-    const original = positions.value.find(p => p.id === selectedPosition.value!.id)
-    if (original) {
-      selectedPosition.value = { ...original }
-    }
-  }
-  isEditing.value = false
-}
-
-onMounted(loadPositions)
+const {
+  entities: positions,
+  newEntity: newPosition,
+  selectedEntity: selectedPosition,
+  searchText,
+  error,
+  successMessage,
+  showDropdown,
+  isEditing,
+  filteredEntities: filteredPositions,
+  addEntity: addPosition,
+  updateEntity: updatePosition,
+  deleteEntity: deletePosition,
+  selectEntity: selectPosition,
+  onSearchFocus,
+  onSearchInput,
+  onSearchBlur,
+  clearSelection,
+  startEditing,
+  cancelEditing,
+  clearNewEntity: clearNewPosition
+} = useEntityManagement(config)
 </script>
 
 <template>
@@ -274,7 +184,7 @@ onMounted(loadPositions)
             <button
               type="button"
               class="btn btn-secondary"
-              @click="newPosition = { name: '', description: '' }"
+              @click="clearNewPosition"
               data-test="clear-new-position-button"
             >
               Clear

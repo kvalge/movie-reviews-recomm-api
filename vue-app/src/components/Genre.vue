@@ -1,132 +1,42 @@
 <script setup lang="ts">
-import { ref, computed, onMounted } from 'vue'
 import { GenreService } from '../services/GenreService'
+import { useEntityManagement } from '../composables/useEntityManagement'
 import type { Genre, GenreResponse } from '../domain/genre'
 
 const genreService = new GenreService()
 
-const genres = ref<GenreResponse[]>([])
-const newGenre = ref<Genre>({ name: '', description: '' })
-const selectedGenre = ref<GenreResponse | null>(null)
-const searchText = ref('')
-const error = ref<string | null>(null)
-const successMessage = ref<string | null>(null)
-const showDropdown = ref(false)
-const isEditing = ref(false)
-
-const loadGenres = async () => {
-  try {
-    const response = await genreService.getAll()
-    genres.value = response.data || []
-  } catch (err) {
-    console.error('Error loading genres:', err)
-    error.value = 'Failed to load genres'
-  }
+const config = {
+  service: genreService,
+  entityName: 'Genre',
+  searchFields: ['name'] as (keyof GenreResponse)[],
+  createEmptyEntity: (): Genre => ({
+    name: '',
+    description: ''
+  })
 }
 
-const addGenre = async () => {
-  const response = await genreService.add(newGenre.value)
-  if (response.data) {
-    genres.value.push(response.data)
-    newGenre.value = { name: '', description: '' }
-    successMessage.value = 'Genre created successfully'
-    setTimeout(() => successMessage.value = null, 3000)
-  } else {
-    error.value = response.errors?.[0] || 'Add failed'
-  }
-}
-
-const updateGenre = async () => {
-  if (!selectedGenre.value) return
-  
-  const response = await genreService.update(selectedGenre.value.id, selectedGenre.value)
-  if (response.data) {
-    const index = genres.value.findIndex(g => g.id === selectedGenre.value!.id)
-    if (index !== -1) {
-      genres.value[index] = response.data
-      selectedGenre.value = response.data
-    }
-    isEditing.value = false
-    successMessage.value = 'Genre updated successfully'
-    setTimeout(() => successMessage.value = null, 3000)
-  } else {
-    error.value = response.errors?.[0] || 'Update failed'
-  }
-}
-
-const deleteGenre = async () => {
-  if (!selectedGenre.value) return
-  
-  const response = await genreService.delete(selectedGenre.value.id)
-  if (!response.errors) {
-    genres.value = genres.value.filter(g => g.id !== selectedGenre.value!.id)
-    selectedGenre.value = null
-    searchText.value = ''
-    isEditing.value = false
-    successMessage.value = 'Genre deleted successfully'
-    setTimeout(() => successMessage.value = null, 3000)
-  } else {
-    error.value = response.errors[0] || 'Delete failed'
-  }
-}
-
-const filteredGenres = computed(() => {
-  if (!searchText.value.trim()) {
-    return genres.value
-  }
-  
-  return genres.value.filter(g =>
-    g.name.toLowerCase().includes(searchText.value.toLowerCase())
-  )
-})
-
-const selectGenre = (genre: GenreResponse) => {
-  selectedGenre.value = { ...genre }
-  searchText.value = genre.name
-  showDropdown.value = false
-  isEditing.value = false
-}
-
-const onSearchFocus = () => {
-  showDropdown.value = true
-}
-
-const onSearchInput = () => {
-  showDropdown.value = true
-  if (!searchText.value.trim()) {
-    selectedGenre.value = null
-    isEditing.value = false
-  }
-}
-
-const onSearchBlur = () => {
-  setTimeout(() => {
-    showDropdown.value = false
-  }, 300)
-}
-
-const clearSelection = () => {
-  selectedGenre.value = null
-  searchText.value = ''
-  showDropdown.value = false
-  isEditing.value = false
-}
-
-const startEditing = () => {
-  isEditing.value = true
-}
-
-const cancelEditing = () => {
-  if (selectedGenre.value) {
-    const original = genres.value.find(g => g.id === selectedGenre.value!.id)
-    if (original) {
-      selectedGenre.value = { ...original }
-    }
-  }
-  isEditing.value = false
-}
-
-onMounted(loadGenres)
+const {
+  entities: genres,
+  newEntity: newGenre,
+  selectedEntity: selectedGenre,
+  searchText,
+  error,
+  successMessage,
+  showDropdown,
+  isEditing,
+  filteredEntities: filteredGenres,
+  addEntity: addGenre,
+  updateEntity: updateGenre,
+  deleteEntity: deleteGenre,
+  selectEntity: selectGenre,
+  onSearchFocus,
+  onSearchInput,
+  onSearchBlur,
+  clearSelection,
+  startEditing,
+  cancelEditing,
+  clearNewEntity: clearNewGenre
+} = useEntityManagement(config)
 </script>
 
 <template>
@@ -274,7 +184,7 @@ onMounted(loadGenres)
             <button 
               type="button" 
               class="btn btn-secondary"
-              @click="newGenre = { name: '', description: '' }"
+              @click="clearNewGenre"
               data-test="clear-new-genre-button"
             >
               Clear
