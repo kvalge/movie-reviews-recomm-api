@@ -1,7 +1,7 @@
 import { describe, it, expect } from 'vitest'
 import { mount } from '@vue/test-utils'
 import { createPinia } from 'pinia'
-import Login from '@/pages/Login.vue'
+import Login from '@/views/Login.vue'
 
 describe('Login Page', () => {
   it('renders login form', () => {

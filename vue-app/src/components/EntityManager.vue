@@ -46,7 +46,7 @@ const {
 
 <template>
   <div class="page-container">
-    <h3>{{ title }}</h3>
+    <h4 class="text-center mb-4 mt-5">{{ title }}</h4>
     
     <div class="split-container">
       <div class="left-panel">

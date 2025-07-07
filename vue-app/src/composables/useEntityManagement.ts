@@ -1,4 +1,4 @@
-import { ref, computed, onMounted } from 'vue'
+import { ref, computed, onMounted, nextTick } from 'vue'
 import type { BaseEntityService } from '../services/BaseEntityService'
 
 export interface EntityConfig<T, TResponse> {
@@ -31,6 +31,7 @@ export function useEntityManagement<T, TResponse extends { id: number }>(
   }
 
   const addEntity = async () => {
+    error.value = null // Clear any previous errors
     const dataToSend = { ...newEntity.value }
     Object.keys(dataToSend).forEach(key => {
       if (typeof (dataToSend as any)[key] === 'string' && (dataToSend as any)[key].trim() === '') {
@@ -51,6 +52,7 @@ export function useEntityManagement<T, TResponse extends { id: number }>(
   const updateEntity = async () => {
     if (!selectedEntity.value) return
     
+    error.value = null // Clear any previous errors
     // Convert empty strings to null for optional fields
     const dataToSend = { ...selectedEntity.value }
     Object.keys(dataToSend).forEach(key => {
@@ -76,6 +78,7 @@ export function useEntityManagement<T, TResponse extends { id: number }>(
   const deleteEntity = async () => {
     if (!selectedEntity.value) return
     
+    error.value = null // Clear any previous errors
     const response = await config.service.delete(selectedEntity.value.id)
     if (!response.errors) {
       entities.value = entities.value.filter(e => e.id !== selectedEntity.value!.id)
@@ -115,6 +118,7 @@ export function useEntityManagement<T, TResponse extends { id: number }>(
 
   const onSearchInput = () => {
     showDropdown.value = true
+    error.value = null // Clear error when user starts typing
     if (!searchText.value.trim()) {
       selectedEntity.value = null
       isEditing.value = false
@@ -127,15 +131,20 @@ export function useEntityManagement<T, TResponse extends { id: number }>(
     }, 300)
   }
 
-  const clearSelection = () => {
+  const clearSelection = async () => {
     selectedEntity.value = null
     searchText.value = ''
     showDropdown.value = false
     isEditing.value = false
+    error.value = null
+    successMessage.value = null
+    // Force reactivity update
+    await nextTick()
   }
 
   const startEditing = () => {
     isEditing.value = true
+    error.value = null // Clear error when starting to edit
   }
 
   const cancelEditing = () => {
@@ -148,8 +157,12 @@ export function useEntityManagement<T, TResponse extends { id: number }>(
     isEditing.value = false
   }
 
-  const clearNewEntity = () => {
+  const clearNewEntity = async () => {
     newEntity.value = config.createEmptyEntity()
+    error.value = null // Clear any errors when clearing new entity form
+    successMessage.value = null // Clear success messages too
+    // Force reactivity update
+    await nextTick()
   }
 
   const showSuccessMessage = (message: string) => {

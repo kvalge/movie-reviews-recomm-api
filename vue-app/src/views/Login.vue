@@ -1,8 +1,8 @@
 <script setup lang="ts">
 import {ref} from 'vue'
 import {useRouter} from 'vue-router'
-import {IdentityService} from '../services/IdentityService'
-import {useAuthStore} from '../stores/authStore'
+import {IdentityService} from '../services/IdentityService.ts'
+import {useAuthStore} from '../stores/authStore.ts'
 
 const router = useRouter()
 const authStore = useAuthStore()

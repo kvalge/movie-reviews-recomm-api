@@ -15,7 +15,7 @@ body {
     min-height: 100vh;
     max-width: 80%;
     margin: 0 auto;
-    color: navy;
+    color: #014c83;
 }
 
 .content {
@@ -30,12 +30,12 @@ body {
 .navbar {
     height: 70px;
     border-radius: 2px;
-    font-size: 15px;
-    font-weight: bold;
+    font-size: 22px;
+    font-weight: lighter;
 }
 
 .navbar.bg-light {
-    background-color: navy !important;
+    background-color: #014c83 !important;
     padding: 20px;
 }
 
@@ -53,19 +53,25 @@ body {
     margin: 0 auto;
     padding: 2rem;
     background-color: ghostwhite;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 0 2px rgba(0, 0, 0, 0.1);
     border-radius: 2px;
 }
 
 h1 {
-    font-size: 50px !important;
+    font-size: 90px !important;
     padding-bottom: 20px;
     padding-top: 20px;
+    font-weight: lighter !important;
+}
+
+h4{
+    font-size: 40px !important;
+    font-weight: lighter !important;
 }
 
 .btn {
-    background-color: navy !important;
-    border-color: navy;
+    background-color: #014c83 !important;
+    border-color: #014c83;
     color: whitesmoke !important;
     font-size: 15px !important;
     font-weight: bold !important;
@@ -91,7 +97,7 @@ h1 {
     padding: 1.5rem;
     background-color: white;
     border-radius: 2px;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
 }
 
 .right-panel {
@@ -99,16 +105,16 @@ h1 {
     padding: 1.5rem;
     background-color: white;
     border-radius: 2px;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
 }
 
 .panel-title {
-    color: navy;
+    color: #014c83;
     font-size: 1.25rem;
     font-weight: bold;
     margin-bottom: 1rem;
     padding-bottom: 0.5rem;
-    border-bottom: 2px solid navy;
+    border-bottom: 2px solid #014c83;
 }
 
 .form-control {
@@ -116,16 +122,16 @@ h1 {
     border-radius: 2px;
     padding: 0.75rem;
     font-size: 14px;
-    color: navy;
+    color: #014c83;
     background-color: white;
     width: 100%;
     box-sizing: border-box;
 }
 
 .form-control:focus {
-    border-color: navy;
+    border-color: #014c83;
     outline: none;
-    box-shadow: 0 0 0 0.2rem rgba(0, 0, 139, 0.25);
+    box-shadow: 0 0 0 6px rgba(0, 0, 139, 0.25);
 }
 
 textarea.form-control {
@@ -148,7 +154,7 @@ textarea.form-control {
     border-radius: 2px;
     max-height: 200px;
     overflow-y: auto;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
     margin-top: 2px;
 }
 
@@ -190,20 +196,20 @@ textarea.form-control {
 }
 
 .selected-item h4 {
-    color: navy;
+    color: #014c83;
     margin-bottom: 0.5rem;
     font-size: 1.1rem;
 }
 
 .selected-item p {
-    color: #666;
+    color: #535353;
     margin-bottom: 1rem;
 }
 
 .form-label {
     display: block;
     margin-bottom: 0.5rem;
-    color: navy;
+    color: #014c83;
     font-weight: bold;
 }
 
@@ -234,18 +240,18 @@ textarea.form-control {
 }
 
 .btn-warning {
-    background-color: #faae04 !important;
-    border-color: #efa509 !important;
+    background-color: #014c83 !important;
+    border-color: #014c83 !important;
 }
 
 .btn-danger {
-    background-color: #bf162b !important;
-    border-color: #a51325 !important;
+    background-color: #00080e !important;
+    border-color: #014c83 !important;
 }
 
 .btn-secondary {
-    background-color: #6b747e !important;
-    border-color: #6b747e !important;
+    background-color: #807f7f !important;
+    border-color: #807f7f !important;
 }
 
 .alert {
@@ -256,14 +262,14 @@ textarea.form-control {
 }
 
 .alert-success {
-    background-color: #d4edda;
-    border: 1px solid #c3e6cb;
-    color: #155724;
+    background-color: #027D7A !important;
+    border: 1px solid #027D7A !important;
+    color: whitesmoke !important;
 }
 
 .alert-danger {
-    background-color: #f8d7da;
-    border: 1px solid #f5c6cb;
+    background-color: #eca6c5 !important;
+    border: 1px solid #eca6c5 !important;
     color: #721c24;
 }
 
@@ -274,7 +280,7 @@ textarea.form-control {
     }
 
     a:hover {
-        color: #747bff;
+        color: #014c83;
     }
 
     button {

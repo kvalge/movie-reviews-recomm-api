@@ -21,7 +21,7 @@ Add, edit, delete genre, position (role of the crew members).
 ### Frontend
 - TypeScript  
 - JavaScript  
-- Vue.js  
+- Vue.js (Composition API)  
 - Vite  
 - Vue Router  
 - Axios  

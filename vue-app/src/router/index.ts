@@ -2,10 +2,10 @@ import {createRouter, createWebHistory} from 'vue-router'
 
 import Home from '../views/Home.vue'
 import About from '../views/About.vue'
-import Register from "../pages/Register.vue";
-import Login from "../pages/Login.vue";
-import AddReview from "../pages/AddReview.vue";
-import ManageMovieData from "../pages/ManageMovieData.vue";
+import Register from "../views/Register.vue";
+import Login from "../views/Login.vue";
+import AddReview from "../views/AddReview.vue";
+import ManageMovieData from "../views/ManageMovieData.vue";
 
 import {useAuthStore} from '../stores/authStore'
 import {storeToRefs} from 'pinia'
