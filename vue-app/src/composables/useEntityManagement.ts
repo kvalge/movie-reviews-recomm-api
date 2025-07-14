@@ -31,7 +31,7 @@ export function useEntityManagement<T, TResponse extends { id: number }>(
   }
 
   const addEntity = async () => {
-    error.value = null // Clear any previous errors
+    error.value = null
     const dataToSend = { ...newEntity.value }
     Object.keys(dataToSend).forEach(key => {
       if (typeof (dataToSend as any)[key] === 'string' && (dataToSend as any)[key].trim() === '') {
@@ -45,16 +45,24 @@ export function useEntityManagement<T, TResponse extends { id: number }>(
       newEntity.value = config.createEmptyEntity() as any
       showSuccessMessage(`${config.entityName} created successfully`)
     } else {
-      error.value = response.errors?.[0] || 'Add failed'
+      // Handle validation errors by field or general errors
+      if (response.errorsByField) {
+        const fieldErrors = Object.values(response.errorsByField).flat()
+        error.value = fieldErrors[0] || 'Add failed'
+      } else {
+        error.value = response.errors?.[0] || 'Add failed'
+      }
     }
   }
 
   const updateEntity = async () => {
     if (!selectedEntity.value) return
     
-    error.value = null // Clear any previous errors
-    // Convert empty strings to null for optional fields
+    error.value = null
     const dataToSend = { ...selectedEntity.value }
+
+    delete (dataToSend as any).id
+    
     Object.keys(dataToSend).forEach(key => {
       if (typeof (dataToSend as any)[key] === 'string' && (dataToSend as any)[key].trim() === '') {
         (dataToSend as any)[key] = null
@@ -71,14 +79,19 @@ export function useEntityManagement<T, TResponse extends { id: number }>(
       isEditing.value = false
       showSuccessMessage(`${config.entityName} updated successfully`)
     } else {
-      error.value = response.errors?.[0] || 'Update failed'
+      if (response.errorsByField) {
+        const fieldErrors = Object.values(response.errorsByField).flat()
+        error.value = fieldErrors[0] || 'Update failed'
+      } else {
+        error.value = response.errors?.[0] || 'Update failed'
+      }
     }
   }
 
   const deleteEntity = async () => {
     if (!selectedEntity.value) return
     
-    error.value = null // Clear any previous errors
+    error.value = null
     const response = await config.service.delete(selectedEntity.value.id)
     if (!response.errors) {
       entities.value = entities.value.filter(e => e.id !== selectedEntity.value!.id)
@@ -159,9 +172,8 @@ export function useEntityManagement<T, TResponse extends { id: number }>(
 
   const clearNewEntity = async () => {
     newEntity.value = config.createEmptyEntity()
-    error.value = null // Clear any errors when clearing new entity form
-    successMessage.value = null // Clear success messages too
-    // Force reactivity update
+    error.value = null
+    successMessage.value = null
     await nextTick()
   }
 

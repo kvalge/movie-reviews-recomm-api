@@ -9,9 +9,9 @@ interface FieldConfig {
   placeholder?: string
   required?: boolean
   rows?: number
-  options?: any[] // For multiselect options
-  optionLabel?: string // Property name for option display text
-  optionValue?: string // Property name for option value
+  options?: any[]
+  optionLabel?: string
+  optionValue?: string
 }
 
 interface Props {
@@ -46,21 +46,17 @@ const {
   clearNewEntity
 } = useEntityManagement(props.entityConfig)
 
-// Handle multiselect fields that need special display/update logic
 const handleMultiselectUpdate = () => {
   if (selectedEntity.value) {
-    // Convert multiselect values to their IDs for API updates
-    fields.forEach(field => {
+    props.fields.forEach(field => {
       if (field.type === 'multiselect') {
         const displayFieldName = field.name.replace('_ids', 's')
         const multiselectValue = (selectedEntity.value as any)[displayFieldName]
         if (Array.isArray(multiselectValue) && multiselectValue.length > 0) {
-          // Convert array of objects to array of IDs
           if (typeof multiselectValue[0] === 'object') {
             ;(selectedEntity.value as any)[field.name] = multiselectValue.map(item => item[field.optionValue || 'id'])
           }
         } else {
-          // If no selection, set to empty array
           ;(selectedEntity.value as any)[field.name] = []
         }
       }
@@ -68,7 +64,6 @@ const handleMultiselectUpdate = () => {
   }
 }
 
-// Enhanced update function that handles multiselect
 const updateEntityWithMultiselect = async () => {
   handleMultiselectUpdate()
   await updateEntity()
