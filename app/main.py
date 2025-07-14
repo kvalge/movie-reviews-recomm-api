@@ -1,6 +1,6 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
-from app.routes import user, genre, position, cast_and_crew
+from app.routes import user, genre, position, cast_and_crew, country
 
 app = FastAPI()
 
@@ -21,3 +21,4 @@ app.include_router(user.router)
 app.include_router(genre.router)
 app.include_router(position.router)
 app.include_router(cast_and_crew.router)
+app.include_router(country.router)

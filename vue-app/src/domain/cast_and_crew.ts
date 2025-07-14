@@ -1,10 +1,13 @@
+import type { CountryResponse } from './country'
+
 export interface CastAndCrew{
     first_name: string,
     last_name: string,
     stage_name: string,
     birth_date: string,
     image_url: string,
-    description: string
+    description: string,
+    country_ids?: number[]
 }
 
 export interface CastAndCrewResponse{
@@ -14,5 +17,6 @@ export interface CastAndCrewResponse{
     stage_name: string,
     birth_date: string,
     image_url: string,
-    description: string
+    description: string,
+    countries: CountryResponse[]
 }

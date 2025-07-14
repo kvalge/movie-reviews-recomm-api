@@ -5,10 +5,13 @@ import type { EntityConfig } from '../composables/useEntityManagement'
 interface FieldConfig {
   name: string
   label: string
-  type: 'text' | 'textarea' | 'date' | 'url'
+  type: 'text' | 'textarea' | 'date' | 'url' | 'multiselect'
   placeholder?: string
   required?: boolean
   rows?: number
+  options?: any[] // For multiselect options
+  optionLabel?: string // Property name for option display text
+  optionValue?: string // Property name for option value
 }
 
 interface Props {
@@ -42,6 +45,34 @@ const {
   cancelEditing,
   clearNewEntity
 } = useEntityManagement(props.entityConfig)
+
+// Handle multiselect fields that need special display/update logic
+const handleMultiselectUpdate = () => {
+  if (selectedEntity.value) {
+    // Convert multiselect values to their IDs for API updates
+    fields.forEach(field => {
+      if (field.type === 'multiselect') {
+        const displayFieldName = field.name.replace('_ids', 's')
+        const multiselectValue = (selectedEntity.value as any)[displayFieldName]
+        if (Array.isArray(multiselectValue) && multiselectValue.length > 0) {
+          // Convert array of objects to array of IDs
+          if (typeof multiselectValue[0] === 'object') {
+            ;(selectedEntity.value as any)[field.name] = multiselectValue.map(item => item[field.optionValue || 'id'])
+          }
+        } else {
+          // If no selection, set to empty array
+          ;(selectedEntity.value as any)[field.name] = []
+        }
+      }
+    })
+  }
+}
+
+// Enhanced update function that handles multiselect
+const updateEntityWithMultiselect = async () => {
+  handleMultiselectUpdate()
+  await updateEntity()
+}
 </script>
 
 <template>
@@ -85,7 +116,13 @@ const {
             <h4>{{ getDisplayName(selectedEntity) }}</h4>
 
             <div v-for="field in fields" :key="`display-${field.name}`">
-              <p v-if="selectedEntity[field.name]">
+              <p v-if="field.type === 'multiselect' && selectedEntity[field.name.replace('_ids', 's')] && selectedEntity[field.name.replace('_ids', 's')].length > 0">
+                <strong>{{ field.label }}:</strong> 
+                <span v-for="(item, index) in selectedEntity[field.name.replace('_ids', 's')]" :key="item[field.optionValue || 'id']">
+                  {{ item[field.optionLabel || 'name'] }}<span v-if="index < selectedEntity[field.name.replace('_ids', 's')].length - 1">, </span>
+                </span>
+              </p>
+              <p v-else-if="field.type !== 'multiselect' && selectedEntity[field.name]">
                 <strong>{{ field.label }}:</strong> {{ selectedEntity[field.name] }}
               </p>
             </div>
@@ -120,12 +157,28 @@ const {
               <label class="form-label">{{ field.label }}</label>
               
               <input 
-                v-if="field.type !== 'textarea'"
+                v-if="field.type !== 'textarea' && field.type !== 'multiselect'"
                 v-model="selectedEntity[field.name]"
                 :type="field.type === 'url' ? 'text' : field.type"
                 class="form-control"
                 :data-test="`edit-${testPrefix}-${field.name.replace('_', '-')}-input`"
               />
+              
+              <select
+                v-else-if="field.type === 'multiselect'"
+                v-model="selectedEntity[field.name.replace('_ids', 's')]"
+                multiple
+                class="form-control"
+                :data-test="`edit-${testPrefix}-${field.name.replace('_', '-')}-select`"
+              >
+                <option 
+                  v-for="option in field.options" 
+                  :key="option[field.optionValue || 'id']" 
+                  :value="option"
+                >
+                  {{ option[field.optionLabel || 'name'] }}
+                </option>
+              </select>
               
               <textarea 
                 v-else
@@ -138,7 +191,7 @@ const {
             
             <div class="action-buttons">
               <button 
-                @click="updateEntity"
+                @click="updateEntityWithMultiselect"
                 class="btn btn-warning btn-sm"
                 :data-test="`update-${testPrefix}-button`"
               >
@@ -165,7 +218,7 @@ const {
             <label :for="`${testPrefix}-${field.name}`" class="form-label">{{ field.label }}</label>
             
             <input 
-              v-if="field.type !== 'textarea'"
+              v-if="field.type !== 'textarea' && field.type !== 'multiselect'"
               :id="`${testPrefix}-${field.name}`"
               v-model="newEntity[field.name]"
               :type="field.type === 'url' ? 'text' : field.type"
@@ -174,6 +227,23 @@ const {
               :required="field.required"
               :data-test="`new-${testPrefix}-${field.name.replace('_', '-')}-input`"
             />
+            
+            <select
+              v-else-if="field.type === 'multiselect'"
+              :id="`${testPrefix}-${field.name}`"
+              v-model="newEntity[field.name]"
+              multiple
+              class="form-control"
+              :data-test="`new-${testPrefix}-${field.name.replace('_', '-')}-select`"
+            >
+              <option 
+                v-for="option in field.options" 
+                :key="option[field.optionValue || 'id']" 
+                :value="option[field.optionValue || 'id']"
+              >
+                {{ option[field.optionLabel || 'name'] }}
+              </option>
+            </select>
             
             <textarea 
               v-else
@@ -223,4 +293,10 @@ const {
       {{ error }}
     </div>
   </div>
-</template> 
+</template>
+
+<style scoped>
+select[multiple] {
+  height: 150px;
+}
+</style> 

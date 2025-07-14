@@ -4,7 +4,7 @@
 User Registration – create a new user account.  
 User Login & Logout – secure authentication flow with session/token support.  
 Authentication Handling – protect routes and resources based on login status.  
-Add, edit, delete genre, position (role of the crew members).  
+Add, edit, delete genre, position (role of the crew members), cast and crew member.  
 
 ## Technologies
 
@@ -89,7 +89,7 @@ cd vue-app; npm run test:e2e
 **Windows (PowerShell):**
 ```powershell
 # Generate and apply migration for new models
-.\migrate.ps1 full-migrate "Create cast_and_crew table."
+.\migrate.ps1 full-migrate "Change table."
 
 # Apply pending migrations only
 .\migrate.ps1 apply
